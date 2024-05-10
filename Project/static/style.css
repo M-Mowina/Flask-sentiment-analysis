@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 30;
+  }
+  
+  #header {
+    background-color:black;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  #header h1 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 28px;
+  }
+  
+  #students ul {
+    list-style: none;
+    text-align: right;
+    padding: 0;
+    margin: 10px 0 0 0;
+  }
+  
+  #students ul li {
+    margin-bottom: 5px;
+  }
+  
+  #methods {
+    background-color:#333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  form {
+    margin-top: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #555;
+  }
+  
