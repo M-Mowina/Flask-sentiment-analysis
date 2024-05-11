@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Youtube Link Upload</title>
+</head>
+<body>
+  <h1>Upload Youtube Link for Prediction</h1>
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <label for="csvfile">Insert Link:</label>
+    <input autocomplete="off" autofocus id="video_id" name="video_id" placeholder="Sentiment" type="text">
+    <br><br>
+    <button type="submit">Submit and Predict</button>
+  </form>
+</body>
+</html>
