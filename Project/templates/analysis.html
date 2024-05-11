@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose File Type</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='analysis.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>File Type Analyzer</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Choose File Type</h2>
+            <div class="file-type-buttons">
+                <a class="nav-link" href="/text">Text</a></li>
+                <a class="nav-link" href="/csv">CSV</a></li>
+                <a class="nav-link" href="/youtube">Youtube</a></li>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 File Type Analyzer</p>
+        </div>
+    </footer>
+</body>
+</html>

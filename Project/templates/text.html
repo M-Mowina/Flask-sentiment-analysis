@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark background color */
+            color: #ffffff; /* Light text color */
+            margin: 0;
+            padding: 30px;
+        }
+  
+        #header {
+            background-color: #333; /* Darker header background color */
+            color: #fff;
+            padding: 20px;
+        }
+        
+        #header h1 {
+            margin: 0 auto;
+            text-align: center;
+            font-size: 28px;
+        }
+        
+        #students ul {
+            list-style: none;
+            text-align: right;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+        
+        #students ul li {
+            margin-bottom: 5px;
+        }
+        
+        #upload {
+            background-color: #444; /* Slightly darker upload section background color */
+            color: #fff;
+            padding: 20px;
+        }
+
+        /* Style the form input and button */
+        #image {
+            border: none;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        #image:focus {
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff; /* Blue submit button */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Style the result section */
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sentiment Analysis</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="text">Enter text:</label>
+        <br>
+        <input autocomplete="off" autofocus id="text" name="text" placeholder="Sentiment" type="text">
+        <br>
+        <button type="submit">Analyze</button>
+    </form>
+    {% if result %}
+        <p>Sentiment: {{ result }}</p>
+    {% endif %}
+    </body>
+</html>
