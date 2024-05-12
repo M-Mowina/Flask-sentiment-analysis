@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import tensorflow as tf
 import numpy as np
 from transformers import BertTokenizer
@@ -13,7 +13,11 @@ import os
 from googleapiclient.discovery import build # type: ignore
 import pandas as pd
 import getpass
+import bcrypt  # For password hashing
+import sqlite3
 
+# Database connection details (replace with your actual values)
+DATABASE_FILE = 'SS.db'
 # Download the 'stopwords' resource
 nltk.download('stopwords')
 stop_words = stopwords.words('english')
@@ -116,7 +120,76 @@ def youtube_analysis():
     # Render form for GET requests
     return render_template('video_comments.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
 
+        # Hash the password before storing
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        # Connect to the database
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+
+        # Check for existing username or email
+        try:
+            cur.execute("SELECT * FROM Users WHERE username = ? OR email = ?", (username, email))
+            existing_user = cur.fetchone()
+            if existing_user:
+                # Handle existing username or email error (e.g., flash message)
+                return render_template('register.html', error="Username or email already exists.")
+        except sqlite3.Error as e:
+            # Handle database errors gracefully (e.g., logging, flash message)
+            return render_template('register.html', error=f"Database error: {str(e)}")
+
+        # Insert new user into database
+        try:
+            cur.execute("INSERT INTO Users (username, password, email) VALUES (?, ?, ?)", (username, hashed_password, email))
+            conn.commit()
+            return redirect('/login')  # Redirect to login page after successful registration
+        except sqlite3.Error as e:
+            # Handle database errors gracefully (e.g., logging, flash message)
+            return render_template('register.html', error=f"Database error: {str(e)}")
+        finally:
+            cur.close()
+            conn.close()
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Connect to the database
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+
+        # Check for user existence
+        try:
+            cur.execute("SELECT * FROM Users WHERE username = ?", (username,))
+            user = cur.fetchone()
+            if not user:
+                # Handle invalid username error (e.g., flash message)
+                return render_template('login.html', error="Invalid username or password.")
+        except sqlite3.Error as e:
+            # Handle database errors gracefully (e.g., logging, flash message)
+            return render_template('login.html', error=f"Database error: {str(e)}")
+
+        # Verify password using bcrypt
+        hashed_password = user[2]  # No decoding needed
+        if not bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+            # Handle invalid password error (e.g., flash message)
+            return render_template('login.html', error="Invalid username or password.")
+
+        return redirect("/")
+        # You can store user ID in the session or use a token-based approach for authentication
+
+    return render_template('login.html')
 
 
 
@@ -230,6 +303,12 @@ def get_top_level_comments_for_video(youtube, video_id):
       break
 
   return top_level_comments
+
+class User:
+    def __init__(self, user_id, username, email):
+        self.user_id = user_id
+        self.username = username
+        self.email = email
 
 
 if __name__ == '__main__':
