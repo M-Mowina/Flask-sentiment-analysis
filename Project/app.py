@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
+from flask_session import Session
 import tensorflow as tf
 import numpy as np
 from transformers import BertTokenizer
@@ -13,8 +14,10 @@ import os
 from googleapiclient.discovery import build # type: ignore
 import pandas as pd
 import getpass
-import bcrypt  # For password hashing
+import bcrypt  
 import sqlite3
+
+
 
 # Database connection details (replace with your actual values)
 DATABASE_FILE = 'SS.db'
@@ -34,6 +37,11 @@ youtube = build('youtube', 'v3', developerKey=API_KEY)
 app = Flask(__name__)
 
 
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
 @app.route("/")
 def home():
     return render_template("analysis.html")
@@ -42,8 +50,10 @@ def home():
 @app.route('/text', methods=['GET', 'POST'])
 def text_analysis():
     if request.method == 'GET':
+        if not session.get('user_id'):
+            return redirect('/login')
+        
         return render_template('text.html')
-    
     else:
         text = request.form['text']
         print(text)
@@ -81,6 +91,9 @@ def csv_analysis():
     else:
       return render_template('csv.html', error="No file selected")
   else:
+    # Redirect to login page if user is not logged in
+    if not session.get('user_id'):
+            return redirect('/login')
     # Render upload page for GET requests
     return render_template('csv.html')
 
@@ -117,8 +130,12 @@ def youtube_analysis():
       # Handle case where no video ID is provided
       return render_template('video_comments.html', error="Please enter a valid YouTube video ID.")
   else:
+    # Redirect to login page if user is not logged in
+    if not session.get('user_id'):
+            return redirect('/login')
     # Render form for GET requests
     return render_template('video_comments.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -159,6 +176,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -186,13 +204,23 @@ def login():
             # Handle invalid password error (e.g., flash message)
             return render_template('login.html', error="Invalid username or password.")
 
+        session['user_id'] = user[0]
+        session['user_name'] = user[1]
+        print('session: ',session)
+        print()
+        print('user: ',user)
         return redirect("/")
-        # You can store user ID in the session or use a token-based approach for authentication
 
     return render_template('login.html')
 
 
+@app.route("/logout")
+def logout():
+    # Forget any user_id
+    session.clear()
 
+    # Redirect user to login form
+    return redirect("/")
 
 
 
