@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/nav_footer.css">
+    <link rel="stylesheet" href="../static/registre.css">
 </head>
 <body>
   <h1>Register</h1>
   {% with error = get_flashed_messages(with_categories=True) %}
     {% if error %}
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-danger m-5" role="alert">
         {{ error[0][1] }}
       </div>
     {% endif %}
   {% endwith %}
-  <form method="post">
+  <!-- <form method="post">
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
       <input type="text" name="username" id="username" class="form-control">
@@ -28,6 +30,93 @@
       <input type="password" name="password" id="password" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
-  </form>
+  </form> -->
+  <header>
+        
+    <div class="">
+        <nav class="navbar navbar-expand-lg fixed-top py-3 bg-color">
+          <div class="container">
+            <a href="#" class="navbar-brand text-white text-uppercase fw-bolder fs-2"
+              >SS</a
+            >
+            <button
+              type="button"
+              class="navbar-toggler"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item me-4 ">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="#">HOME</a>
+                </li>
+                  
+                <li class="nav-item me-4 ">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="#">ABOUT</a>
+                </li>
+
+                <li class="nav-item me-4">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="/contact">CONTACT-US</a>
+                </li>
+
+                <li class="nav-item me-4">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2 " href="/">ANALYSIS</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav ms-auto">
+                <i class="fa fa-user icon_user mx-auto" aria-hidden="true"></i>
+                <li class="nav-item me-2">
+                  <a href="./login.html" class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4"
+                    
+                    >Login</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      
+        <div class="loader"></div>
+      </div>
+</header>
+  <div>
+    <form class="form" method="post">
+      <p class="title">Register</p>
+      <p class="message">Signup now and get full access to our app.</p>
+      <!-- <div class="flex">
+        <label>
+          <input required="" placeholder="" type="text" class="input" />
+          <span>Firstname</span>
+        </label>
+  
+        <label>
+          <input required="" placeholder="" type="text" class="input" />
+          <span>Lastname</span>
+        </label>
+      </div> -->
+  
+      <label>
+        <input required="" placeholder="" name="username" id="username" type="text" class="input" />
+        <span>Username</span>
+      </label>
+
+      <label>
+        <input required="" placeholder="" name="email" id="email" type="email" class="input" />
+        <span>Email</span>
+      </label>
+
+      <label>
+        <input required="" placeholder="" name="password" id="password" type="password" class="input" />
+        <span>password</span>
+      </label>
+      <button class="submit">Submit</button>
+      <p class="signin">Already have an acount ? <a href="/login">Signin</a></p>
+    </form>
+  </div>
+  
+  <div class="p p-3 text-center text-white bg-color-p">
+    <p>Copyright © Your Website 2024</p>
+</div>
 </body>
 </html>

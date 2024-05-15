@@ -1,0 +1,27 @@
+.bg-color-p{
+    background-color: #1A252F;
+}
+
+
+.bg-color{
+    background-color: #2C3E50;
+}
+.icon_user{
+    font-size: 40px;
+    color: #fff;
+}
+
+li {
+  border: none;
+  outline: none;
+  padding: 10px 16px;
+  
+  cursor: pointer;
+}
+
+.active, li:hover {
+    background-color: #193148;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 6px #182531;
+  }

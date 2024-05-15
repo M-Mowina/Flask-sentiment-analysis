@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_session import Session
 import tensorflow as tf
 import numpy as np
@@ -16,7 +16,11 @@ import pandas as pd
 import getpass
 import bcrypt  
 import sqlite3
-
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+from io import BytesIO
 
 
 # Database connection details (replace with your actual values)
@@ -46,6 +50,9 @@ Session(app)
 def home():
     return render_template("analysis.html")
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 @app.route('/text', methods=['GET', 'POST'])
 def text_analysis():
@@ -81,13 +88,25 @@ def csv_analysis():
 
       # Get text data for prediction
       df['prediction'] = df['text'].apply(lambda text: predict_sentiment(text))
+      # Create pie chart (same code as before)
+      ax = df['prediction'].value_counts().plot(kind='pie', autopct='%1.1f%%', figsize=(6, 4))
+      ax.set_title('Count of Reviews For each lapel')
+
+      # Customize the plot (optional)
+      plt.legend(df['prediction'].unique())  # Add labels for pie slices
+
+      # Save the plot to a byte buffer
+      img_io = BytesIO()
+      plt.savefig(img_io, format='png')
+      img_io.seek(0)  # Reset the buffer to the beginning
+      img_data = base64.b64encode(img_io.read()).decode('utf-8')  # Encode as base64 string
 
       # Improve table presentation (HTML styling)
       table_html = df.to_html(classes="data-table", escape=False)
       table_html = table_html.replace('table', '<table class="table table-striped">')  # Add Bootstrap classes
 
       # Return rendered template with results
-      return render_template('csv_results.html', data=table_html)
+      return render_template('csv_results.html', data=table_html, img_data=img_data)
     else:
       return render_template('csv.html', error="No file selected")
   else:
@@ -115,14 +134,27 @@ def youtube_analysis():
       if comments:
         # Create DataFrame from comments
         comments_df = pd.DataFrame(comments)
-        comments_df['Comment'] = comments_df['Comment'].apply(lambda text: predict_sentiment(text))
+        comments_df['prediction'] = comments_df['Comment'].apply(lambda text: predict_sentiment(text))
         comments_df = comments_df.drop(['Timestamp', 'VideoID'], axis=1)
         # Improve table presentation (HTML styling)
         table_html = comments_df.to_html(classes="data-table", escape=False)
         table_html = table_html.replace('table', '<table class="table table-striped">')  # Add Bootstrap classes
 
+
+        # Create pie chart
+        ax = comments_df['prediction'].value_counts().plot(kind='pie', autopct='%1.1f%%', figsize=(6, 4))
+        ax.set_title('Count of Reviews For each lapel')
+        
+        # Customize the plot (optional)
+        plt.legend(comments_df['prediction'].unique())  # Add labels for pie slices
+
+        # Save the plot to a byte buffer
+        img_io = BytesIO()
+        plt.savefig(img_io, format='png')
+        img_io.seek(0)  # Reset the buffer to the beginning
+        img_data = base64.b64encode(img_io.read()).decode('utf-8')  # Encode as base64 string
         # Return rendered template with results
-        return render_template('csv_results.html', data=table_html)
+        return render_template('csv_results.html', data=table_html, img_data=img_data)
       else:
         # Handle case where no comments are found
         return render_template('video_comments.html', error="No comments found for the provided video ID.")
@@ -157,7 +189,11 @@ def register():
             existing_user = cur.fetchone()
             if existing_user:
                 # Handle existing username or email error (e.g., flash message)
-                return render_template('register.html', error="Username or email already exists.")
+                error = "Username or email already exists."
+                flash(error, 'danger')
+                print(error)
+                return render_template('register.html', error=error)
+                
         except sqlite3.Error as e:
             # Handle database errors gracefully (e.g., logging, flash message)
             return render_template('register.html', error=f"Database error: {str(e)}")

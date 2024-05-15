@@ -7,6 +7,9 @@
 </head>
 <body>
   <h1>Analysis Results</h1>
+  {% if img_data %}
+    <img src="data:image/png;base64,{{ img_data }}" alt="Sentiment Analysis Pie Chart">
+  {% endif %}
   {% if data %}
     <div class="container">
       {{ data | safe }}  </div>
