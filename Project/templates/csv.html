@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CSV File Upload</title>
+  <meta charset="UTF-8">
+  <title>CSV File Upload</title>
+  <style>
+    /* Basic styling for the body */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    /* Style the heading */
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Style the form */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40%;
+      margin: 0 auto;
+    }
+
+    /* Style the label */
+    label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    /* Style the file input field */
+    input[type="file"] {
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    /* Style the button */
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    /* Style the error paragraph (if present) */
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
+
 <body>
   <h1>Upload CSV for Prediction</h1>
   {% if error %}
-    <p style="color: red;">{{ error }}</p>
+    <p class="error">{{ error }}</p>
   {% endif %}
   <form method="post" enctype="multipart/form-data">
     <label for="csvfile">Select CSV file:</label>

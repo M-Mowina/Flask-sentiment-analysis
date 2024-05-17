@@ -17,6 +17,8 @@ import getpass
 import bcrypt  
 import sqlite3
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -80,7 +82,9 @@ def csv_analysis():
           df = pd.read_csv(uploaded_file)
       except Exception as e:
           # Handle potential errors during CSV reading
-          return render_template('csv.html', error=f"Error reading CSV: {str(e)}")
+          error = str(e)
+          flash(error, 'danger')
+          return render_template('csv.html', error=error)
 
       # Check if there's a text column for prediction
       if 'text' not in df.columns:
@@ -108,7 +112,9 @@ def csv_analysis():
       # Return rendered template with results
       return render_template('csv_results.html', data=table_html, img_data=img_data)
     else:
-      return render_template('csv.html', error="No file selected")
+      error = "No file selected"
+      flash(error, 'danger')
+      return render_template('csv.html', error=error)
   else:
     # Redirect to login page if user is not logged in
     if not session.get('user_id'):
@@ -157,10 +163,14 @@ def youtube_analysis():
         return render_template('csv_results.html', data=table_html, img_data=img_data)
       else:
         # Handle case where no comments are found
-        return render_template('video_comments.html', error="No comments found for the provided video ID.")
+        error = "No comments found for the provided video ID."
+        flash(error, 'danger')
+        return render_template('video_comments.html', error=error)
     else:
       # Handle case where no video ID is provided
-      return render_template('video_comments.html', error="Please enter a valid YouTube video ID.")
+      error = "Please provide a valid video ID."
+      flash(error, 'danger')
+      return render_template('video_comments.html', error=error)
   else:
     # Redirect to login page if user is not logged in
     if not session.get('user_id'):
@@ -196,7 +206,9 @@ def register():
                 
         except sqlite3.Error as e:
             # Handle database errors gracefully (e.g., logging, flash message)
-            return render_template('register.html', error=f"Database error: {str(e)}")
+            error = str(e)
+            flash(error, 'danger')
+            return render_template('register.html', error=f"Database error: {error}")
 
         # Insert new user into database
         try:
@@ -205,7 +217,9 @@ def register():
             return redirect('/login')  # Redirect to login page after successful registration
         except sqlite3.Error as e:
             # Handle database errors gracefully (e.g., logging, flash message)
-            return render_template('register.html', error=f"Database error: {str(e)}")
+            error = str(e)
+            flash(error, 'danger')
+            return render_template('register.html', error=f"Database error: {error}")
         finally:
             cur.close()
             conn.close()
@@ -229,16 +243,22 @@ def login():
             user = cur.fetchone()
             if not user:
                 # Handle invalid username error (e.g., flash message)
-                return render_template('login.html', error="Invalid username or password.")
+                error = "Invalid username or password."
+                flash(error, 'danger')
+                return render_template('login.html', error=error)
         except sqlite3.Error as e:
             # Handle database errors gracefully (e.g., logging, flash message)
-            return render_template('login.html', error=f"Database error: {str(e)}")
+            error = str(e)
+            flash(error, 'danger')
+            return render_template('login.html', error=f"Database error: {error}")
 
         # Verify password using bcrypt
         hashed_password = user[2]  # No decoding needed
         if not bcrypt.checkpw(password.encode('utf-8'), hashed_password):
             # Handle invalid password error (e.g., flash message)
-            return render_template('login.html', error="Invalid username or password.")
+            error = "Invalid username or password."
+            flash(error, 'danger')
+            return render_template('login.html', error=error)
 
         session['user_id'] = user[0]
         session['user_name'] = user[1]

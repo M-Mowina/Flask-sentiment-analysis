@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Analysis Results</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <style>
+    /* Main container with some padding */
+    .container {
+      padding: 1rem;
+      text-align: center; /* Center content horizontally */
+    }
+
+    /* Style the chart image container */
+    .analysis-chart {
+      display: inline-block; /* Display image inline with text */
+      margin-bottom: 1rem; /* Add margin for spacing */
+      border-radius: 50%; /* Make the container circular */
+      overflow: hidden; /* Prevent chart overflowing the container */
+      /* Maintain aspect ratio for circle */
+      aspect-ratio: 1;
+      /* Set a smaller width for the image container */
+      width: 300px;
+    }
+
+    /* Style the actual pie chart (assuming it's an image) */
+    .analysis-chart img {
+      width: 100%; /* Stretch the image to fill the container */
+      height: 100%; /* Stretch the image to fill the container */
+      object-fit: cover; /* Ensure entire image is visible */
+    }
+
+    /* Style the data container (assuming it's a table) */
+    .analysis-data {
+      width: 100%; /* Display table full width */
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 1rem; /* Add margin for spacing from image */
+    }
+
+    /* Error handling for missing image data */
+    .analysis-chart.no-image {
+      background-color: #ddd; /* Set background color if no image */
+      text-align: center;
+      padding: 1rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Analysis Results</h1>
+    <div class="analysis-chart">
+      {% if img_data %}
+        <img src="data:image/png;base64,{{ img_data }}" alt="Sentiment Analysis Pie Chart">
+      {% else %}
+        <div class="analysis-chart no-image">
+          No image data available.
+        </div>
+      {% endif %}
+    </div>
+    {% if data %}
+      <div class="analysis-data">
+        {{ data | safe }}
+      </div>
+    {% else %}
+      <p class="text-center">No results available yet.</p>
+    {% endif %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
