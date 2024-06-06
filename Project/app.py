@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 from io import BytesIO
-
+import regex as re
 
 # Database connection details (replace with your actual values)
 DATABASE_FILE = 'SS.db'
@@ -52,9 +52,44 @@ Session(app)
 def home():
     return render_template("analysis.html")
 
-@app.route("/contact")
+@app.route("/contact", methods=['GET', 'POST'])
 def contact():
-    return render_template("contact.html")
+    if request.method == 'GET':
+        if not session.get('user_id'):
+            return redirect('/login')
+        
+        return render_template("contact.html")
+    else:
+        #name = request.form.get('name')  # Optional, get name if provided
+        email = request.form['email']
+        message = request.form['message']
+        print(message)
+        # Connect to the database
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+        # Insert data into the ContactUs table
+        try:
+            user_id = session['user_id']
+            name = session['user_name']
+            # Use a parameterized query to prevent SQL injection attacks
+            cur.execute("INSERT INTO ContactUs (user_id, name, email, message) VALUES (?, ?, ?, ?)", 
+                  (user_id, name, email, message))
+            conn.commit()
+            respond = 'Your message has been sent successfully!'
+            flash(respond, 'success')
+            print(respond)
+            return render_template('contact.html', error=respond)
+        except sqlite3.Error as e:
+            # Handle database errors gracefully (e.g., logging, flash message)
+            error = str(e)
+            flash(f"Database error: {error}", 'danger')
+            print(error)
+            return render_template('contact.html', error=error)
+        finally:
+            cur.close()
+            conn.close()
+
+    
 
 @app.route('/text', methods=['GET', 'POST'])
 def text_analysis():
@@ -127,7 +162,8 @@ def csv_analysis():
 def youtube_analysis():
   if request.method == 'POST':
     # Get video ID from form
-    video_id = request.form['video_id']
+    link = request.form['video_id']
+    video_id = extract_video_id(link)
 
     if video_id:
       # Build YouTube client
@@ -346,6 +382,14 @@ def predict_csv(csv_file):
       
       # Return rendered template with results
       return df['prediction']
+
+def extract_video_id(youtube_url):
+    pattern = r"(?<=v=|\/videos\/|embed\/|youtu.be\/|\/v\/|\/e\/|watch\?v=|&v=|%2Fvideos%2F|embed%2F|%2Fv%2F|%2Fe%2F|%2Fwatch%3Fv%3D|%26v%3D|%3Fv%3D)([\w-]+)"
+    match = re.search(pattern, youtube_url)
+    if match:
+        return match.group(1)
+    else:
+        return None
 
 def get_top_level_comments_for_video(youtube, video_id):
   """

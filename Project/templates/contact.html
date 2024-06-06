@@ -16,9 +16,7 @@
       <div class="">
         <nav class="navbar navbar-expand-lg fixed-top py-3 bg-color">
           <div class="container">
-            <a
-              href="#"
-              class="navbar-brand text-white text-uppercase fw-bolder fs-2"
+            <a href="#" class="navbar-brand text-white text-uppercase fw-bolder fs-2"
               >SS</a
             >
             <button
@@ -31,57 +29,56 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li class="nav-item me-4">
-                  <a
-                    class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"
-                    href="#"
-                    >HOME</a
-                  >
+                <li class="nav-item me-4 ">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="#">HOME</a>
+                </li>
+                  
+                <li class="nav-item me-4 ">
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="#">ABOUT</a>
                 </li>
 
                 <li class="nav-item me-4">
-                  <a
-                    class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2"
-                    href="#"
-                    >ABOUT</a
-                  >
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="/contact">CONTACT-US</a>
                 </li>
 
                 <li class="nav-item me-4">
-                  <a
-                    class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2 active"
-                    href="/contact"
-                    >CONTACT-US</a
-                  >
-                </li>
-
-                <li class="nav-item me-4">
-                  <a
-                    class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2 "
-                    href="/"
-                    >ANALYSIS</a
-                  >
+                  <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2 active" href="/">ANALYSIS</a>
                 </li>
               </ul>
               <ul class="navbar-nav ms-auto">
                 <i class="fa fa-user icon_user mx-auto" aria-hidden="true"></i>
-                <li class="nav-item me-2">
-                  <a
-                    href="/login"
-                    class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4"
-                    >Login</a
-                  >
+                <li >
+                  {% if session.get('user_id') %}
+                    <p style="color: #fff; font-weight: bold;">Welcome, {{ session.get('user_name') }}!</p>
+                  {% endif %}
                 </li>
+                <li class="nav-item me-2">
+                  {% if session.get('user_id') %}
+                    <a href="/logout" class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4">logout</a>
+                    
+                  {% else %}
+                    <a href="/login" class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4">Login</a>
+                    
+                  {% endif %}
+                    
+                </li>
+                
               </ul>
             </div>
           </div>
         </nav>
-
+      
         <div class="loader"></div>
       </div>
     </header>
-
-    <form class="">
+    {% with error = get_flashed_messages(with_categories=True) %}
+      {% if error %}
+        <div class="alert alert-danger m-5" role="alert">
+          {{ error[0][1] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <form class="" action="/contact" method="post">
       <input
         name="name"
         type="text"
@@ -90,12 +87,12 @@
       />
       <input
         name="email"
-        type="text"
+        type="email"
         class="feedback-input"
         placeholder="Email"
       />
       <textarea
-        name="text"
+        name="message"
         class="feedback-input"
         placeholder="Comment"
       ></textarea>
