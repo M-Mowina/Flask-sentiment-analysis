@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='nav_footer.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+</head>
+<body>
+    <header>
+        
+        <div class="">
+            <nav class="navbar navbar-expand-lg fixed-top py-3 bg-color">
+              <div class="container">
+                <a href="#" class="navbar-brand text-white text-uppercase fw-bolder fs-2"
+                  >SS</a
+                >
+                <button
+                  type="button"
+                  class="navbar-toggler"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarCollapse"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item me-4 ">
+                      <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="/">HOME</a>
+                    </li>
+                      
+                    <li class="nav-item me-4 ">
+                      <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2 active" href="/about">ABOUT</a>
+                    </li>
+    
+                    <li class="nav-item me-4">
+                      <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="/contact">CONTACT-US</a>
+                    </li>
+    
+                    <li class="nav-item me-4">
+                      <a class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-2" href="/analysis">ANALYSIS</a>
+                    </li>
+                  </ul>
+                  <ul class="navbar-nav ms-auto">
+                    <i class="fa fa-user icon_user mx-auto" aria-hidden="true"></i>
+                    <li >
+                      {% if session.get('user_id') %}
+                        <p style="color: #fff; font-weight: bold;">Welcome, {{ session.get('user_name') }}!</p>
+                      {% endif %}
+                    </li>
+                    <li class="nav-item me-2">
+                      {% if session.get('user_id') %}
+                        <a href="/logout" class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4">logout</a>
+                        
+                      {% else %}
+                        <a href="/login" class="nav-link text-white text-uppercase fw-bold mt-3 mt-md-0 px-4">Login</a>
+                        
+                      {% endif %}
+                        
+                    </li>
+                    
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          
+            <div class="loader"></div>
+          </div>
+    </header>
+
+    <div class="row m-5 p-5">
+        <div class="col-sm-5 p-4 text-white color-text">
+            <p class="p-4">Sentiment Analysis</p>
+            <h2 class="p-2">Why is sentiment analysis important?</h2>
+            <p class="p-2">It's important to understand your audience. Sentiment analysis helps you understand how your product's sales might get affected by people's comments and opinions.</p>
+            <h2 class="p-2">Why use our website?</h2>
+            <p class="p-2">Our website takes data from multiple platforms and analyzes it to define the key components that affect a business and its sales.</p>
+            <h2 class="p-2">What our page has to offer?</h2>
+            <p class="p-2">Our website offers a general analysis for your data. Also offers predictions for your product according to data collected from multiple sources.</p>
+        </div>
+        <div class="col-sm-7 p-3 img">
+            <img class="w-100" src="{{ url_for('static', filename='about.png') }}" alt="img">
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="container py-5">
+        <h1 class="font-weight-bold mb-2 text-center">Our Team</h1>
+        <p class="font-italic text-muted mb-4 text-center">University students MTI, graduation project "Social Media sentiment analysis".</p>
+        <div class="row pb-5 mb-4">
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm border-0 rounded">
+              <div class="card-body p-0"><img style="height: 340px;" src="{{ url_for('static', filename='img_t/mo.jpeg') }}" alt="" class="w-100 card-img-top">
+                <div class="p-4">
+                  <h5 class="mb-0">Mohamed Monged</h5>
+                  <p class="small text-muted">MEAN Stack</p>
+                  <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm border-0 rounded">
+              <div class="card-body p-0"><img style="height: 340px;" src="{{ url_for('static', filename='img_t/sara.jpeg') }}" alt="" class="w-100 card-img-top">
+                <div class="p-4">
+                  <h5 class="mb-0">Sara Diaa</h5>
+                  <p class="small text-muted">AI Engineer</p>
+                  <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm border-0 rounded">
+              <div class="card-body p-0"><img src="{{ url_for('static', filename='img_t/WhatsApp Image 2024-06-19 at 1.10.33 AM.jpeg') }}" alt="" class="w-100 card-img-top">
+                <div class="p-4">
+                  <h5 class="mb-0">Mohamed Mowina</h5>
+                  <p class="small text-muted">AI Engineer</p>
+                  <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm border-0 rounded">
+              <div class="card-body p-0"><img style="height: 340px;" src="{{ url_for('static', filename='img_t/WhatsApp Image 2024-06-19 at 1.16.09 AM.jpeg') }}" alt="" class="w-100 card-img-top">
+                <div class="p-4">
+                  <h5 class="mb-0">Ahmed Mostafa</h5>
+                  <p class="small text-muted">DevOps</p>
+                  <ul class="social mb-0 list-inline mt-3">
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+       
+        <div class="row pb-5 mb-4">
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0"><img style="height: 255px;" src="{{ url_for('static', filename='img_t/WhatsApp Image 2024-06-19 at 1.26.01 AM.jpeg') }}" alt="" class="w-100 card-img-top">
+                  <div class="p-4">
+                    <h5 class="mb-0">Fady Farid Aazer</h5>
+                    <p class="small text-muted">Student</p>
+                    <ul class="social mb-0 list-inline mt-3">
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0"><img style="height: 255px;" src="{{ url_for('static', filename='img_t/WhatsApp Image 2024-06-19 at 1.16.38 AM.jpeg') }}" alt="" class="w-100 card-img-top">
+                  <div class="p-4">
+                    <h5 class="mb-0">Ahmed Ayman</h5>
+                    <p class="small text-muted">Student</p>
+                    <ul class="social mb-0 list-inline mt-3">
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0"><img style="height: 255px;" src="{{ url_for('static', filename='img_t/mazn.jpeg') }}" alt="" class="w-100 card-img-top">
+                  <div class="p-4">
+                    <h5 class="mb-0">Mohamed Mazan</h5>
+                    <p class="small text-muted">Student</p>
+                    <ul class="social mb-0 list-inline mt-3">
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0"><img style="height: 255px;" src="{{ url_for('static', filename='img_t/OIP.jfif') }}" alt="" class="w-100 card-img-top">
+                  <div class="p-4">
+                    <h5 class="mb-0">Abdelwhab Ahmed</h5>
+                    <p class="small text-muted">Student</p>
+                    <ul class="social mb-0 list-inline mt-3">
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a></li>
+                      <li class="list-inline-item m-0"><a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p p-3 bg-color-p">
+        <p class="p p-3 text-center text-white bg-color-p">Copyright © Your Website 2024</p>
+    </div>
+</body>
+</html>

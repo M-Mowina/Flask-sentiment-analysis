@@ -24,6 +24,7 @@ import io
 import base64
 from io import BytesIO
 import regex as re
+import emoji
 
 # Database connection details (replace with your actual values)
 DATABASE_FILE = 'SS.db'
@@ -33,7 +34,11 @@ stop_words = stopwords.words('english')
 lemmatizer = WordNetLemmatizer()
 #Tokenize using BERT tokenizer (optional, replace with your desired tokenizer)
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-model = tf.keras.models.load_model('amazon_full_model2.h5')
+model3_path = 'amazon_full_model2.h5'
+model2_path = 'final_model_V1.h5'
+model1_path = 'podcasts_rnn_model.h5'
+model = tf.keras.models.load_model(model3_path)
+
 # Build the YouTube client
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -50,7 +55,17 @@ Session(app)
 
 @app.route("/")
 def home():
+    return render_template("index.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/analysis")
+def analysis():
     return render_template("analysis.html")
+
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
@@ -90,7 +105,6 @@ def contact():
             conn.close()
 
     
-
 @app.route('/text', methods=['GET', 'POST'])
 def text_analysis():
     if request.method == 'GET':
@@ -346,16 +360,27 @@ def predict_sentiment(text, model = model, tokenizer = tokenizer, max_len = 200)
 
   return sentiment_label
 
+
+
+def emoji_to_text(input_text):
+    # Replace emojis with their textual representation
+    text_with_emojis = emoji.demojize(input_text)
+    return text_with_emojis
+
 def preprocess_text(text):
+  """Applies preprocessing steps to the given text."""
   # Lowercase text
   text = text.lower()
 
-  # Remove numbers (optional)
-  text = re.sub('[0-9]+', '', text)  # Consider keeping numbers for specific domains
-
-  # Remove special characters and some punctuation
-  text = re.sub(r"[^\w\s!@#\$%&*\(\)_\+=\^:\.,;]", " ", text)  # Preserve negation words, some punctuation
+  # Convert emoji to text
+  text = emoji_to_text(text)
   
+  # Remove numbers (optional)
+  text = re.sub('[0-9]+', '', text)
+
+  # Remove special characters, punctuation including %, ., and ,
+  text = re.sub(r"[^\w\s!@#\$*\(\)_\+=\^:\\]", " ", text)  # Preserve negation words
+
   # Lemmatization (preferred)
   text = ' '.join([lemmatizer.lemmatize(word) for word in text.split()])
 
