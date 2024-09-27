@@ -73,7 +73,11 @@
   {% endif %}
   {% if data %}
     <div class="container">
-      {{ data | safe }}  </div>
+      <details>
+        <summary>Analysis Results</summary>
+        {{ data | safe }}  
+      </details>
+      </div>
   {% else %}
     <p>No results available yet.</p>
   {% endif %}

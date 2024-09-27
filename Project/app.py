@@ -354,7 +354,7 @@ def predict_sentiment(text, model = model, tokenizer = tokenizer, max_len = 200)
   predicted_sentiment = model.predict(padded_input)[0][0]  # Assuming single output
 
   # Define a threshold for sentiment classification (optional)
-  threshold = 0.5  # Adjust threshold based on your model's output range
+  threshold = 0.35  # Adjust threshold based on your model's output range
 
   sentiment_label = 'Positive' if predicted_sentiment > threshold else 'Negative'
 
